@@ -4,10 +4,10 @@ import express from 'express';
 const router = express.Router();
 
 // Ruta GET para renderizar el index.handlebars:
-router.get("/", (request, response) => {
-      response.render("home");
+router.get('/', (request, response) => {
+      response.render('home');
 })
 
 // Exportación del router para ser utilizado en la app:
-export default router;
+export { router };
 
