@@ -1,9 +1,11 @@
-<h1 class="title">Listado de todos los productos agregados hasta el momento</h1>
+<h1 class="title">Listado de productos</h1>
 
+<div class="products-wrapper">
 {{#each products}}
-      <div class="products-container">
+<div class="product-container">
             <h2>Nombre: {{this.title}}</h2>
             <p>Descripción: {{this.description}}</p>
-            <p>Precio: {{this.price}}</p>
-      </div>
+            <p>Precio: €{{this.price}}</p>
+</div> 
 {{/each}}
+</div>

@@ -54,11 +54,13 @@ export class ProductManager {
                   const productsDB = await this.readDB()
                   // Validación 1: Mensaje de error en caso de que no se completen todos los campos requeridos.
                   if (!title || !description || !code || !price || !status || !stock || !category || !thumbnails) {
+                  alert(`Error. Es necesario completar todos los campos del producto para que pueda ser agregado a la base de datos.`)
                   return console.log(`Error. Es necesario completar todos los campos del producto para que pueda ser agregado a la base de datos.`)
                   }
                   // Validación 2: Mensaje de error en caso de que el "code" del producto agregado ya exista.
                   const repeatedCode = productsDB.find(prod => prod.code === code)
                   if (repeatedCode) {
+                  alert(`Error. El producto: "${title}" no pudo ser agregado porque ya existe un producto con el código ingresado.`)
                   return console.log(`Error. El producto: "${title}" no pudo ser agregado porque ya existe un producto con el código ingresado.`)
                   }
 
@@ -74,17 +76,19 @@ export class ProductManager {
                         thumbnails: thumbnails || []
                   }
                   // Validación 3: Creación de un id autoincremental en cada producto agregado.
-                  let lastId = 0
+                  let lastId = 0;
                   if (productsDB.length > 0) {
-                  lastId = productsDB[productsDB.length - 1].id
+                  lastId = productsDB[productsDB.length - 1].id;
                   }
-                  newProduct.id = parseInt(lastId) + 1
+                  newProduct.id = parseInt(lastId) + 1;
                   // Se agrega al nuevo producto al array.
-                  productsDB.push(newProduct)
+                  productsDB.push(newProduct);
                   // Se agrega el nuevo producto al archivo JSON
-                  await fs.writeFile(this.path, JSON.stringify(productsDB, null, 2), "utf-8")
+                  await fs.writeFile(this.path, JSON.stringify(productsDB, null, 2), "utf-8");
+                  alert(`Producto: ${title} agregado con éxito.`);
             } catch (error) {
-                  console.log(`Error al agregar el producto: ${newProduct.title}.`, error)
+                  console.log(`Error al agregar el producto: ${newProduct.title}.`, error);
+                  alert(`Error al agregar el producto: ${newProduct.title}.`);
             }
       }
 
