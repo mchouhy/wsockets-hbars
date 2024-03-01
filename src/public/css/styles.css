@@ -17,21 +17,34 @@
       display: grid;
       grid-template-columns: repeat(2, 1fr);
       gap: 1.5rem;
-      row-gap: 3rem;
       padding-top: 60px;
       padding-bottom: 60px;
       max-width: 1200px;
       margin: 0 auto;
-};
+}
 
 .product-container {
+      background-color: #8F918E;
       display: flex;
-      width: 300px;
-      height: 300px;
+      flex-direction: column;
+      justify-content: center;
+      gap: 2rem;
+      padding: 2rem;
+      border-radius: 32px;
+}
+
+.product-container h2 {
+      font-weight: normal;
+}
+
+.product-container:hover {
+      transform: scale(1.03);
+      transition: 400ms;
 }
 
 .inputs-container {
       padding-top: 60px;
+      padding-bottom: 60px;
       display: grid;
       gap: 1rem;
       grid-template-columns: repeat(4, 1fr);

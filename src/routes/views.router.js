@@ -5,7 +5,7 @@ const router = express.Router();
 // Importación del manejador de productos.
 import { ProductManager } from '../controllers/productManager.js'
 // Llamado de la función constructora.
-const productManager = new ProductManager;
+export const productManager = new ProductManager;
 
 // Ruta GET para renderizar el home.handlebars:
 router.get('/', async (request, response) => {
