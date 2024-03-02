@@ -20,11 +20,11 @@ router.get('/', async (request, response) => {
 })
 
 // Ruta GET para renderizar el realTimeProducts.handlebars:
-router.get('/realtimeproducts', async (request, response) => {
+router.get('/realTimeProducts', async (request, response) => {
       try {
             const title = "Productos en tiempo real";
             const products = await productManager.getProducts();
-            response.render('realTimeProducts', { title, products });
+            response.render('realTimeProducts', { title: title, products: products });
             
       } catch (error) {
             console.log('Error al obtener los productos.', error);

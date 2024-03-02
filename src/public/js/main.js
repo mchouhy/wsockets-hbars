@@ -1,7 +1,3 @@
-// Importación del manejador de productos.
-import { ProductManager } from "../../controllers/productManager.js";
-// Llamado de la función constructora.
-const productManager = new ProductManager;
 // Console log que verifica que Handlebars está funcionando correctamente:
 console.log("Handlebars funcionando correctamente.");
 // Generación de una instancia de socket del lado del cliente:
@@ -12,30 +8,47 @@ socket.emit("client-message", "Soy el cliente enviando un mensaje.");
 socket.on("server-message", (data) => {
       console.log(data);
 })
-
-document.addEventListener("DOMContentLoaded", (e) => {
+// Variable que aloja el formulario para agregar productos.
+const addProductForm = document.getElementById("addProductForm");
+// Función que escucha el evento submit, guarda los valores ingresados y los envía al socket del lado del servidor para aplicarlo al json.
+addProductForm.addEventListener("submit", (e) => {
       e.preventDefault();
-      const addProductBtn = document.getElementById("addProductBtn");
-      addProductBtn.addEventListener("click", async () => {
-            const titleInput = document.getElementById("title").value;
-            const descriptionInput = document.getElementById("description").value;
-            const priceInput = document.getElementById("price").value;
-            const thumbnailsInput = document.getElementById("thumbnails").value;
-            const stockInput = document.getElementById("stock").value;
-            const codeInput = document.getElementById("code").value;
-            const statusInput = document.getElementById("status").value;
-            const categoryInput = document.getElementById("category").value;
+      console.log("submit")
 
-                  productManager.addProduct(
-                        {titleInput,
-                        descriptionInput,
-                        priceInput,
-                        priceInput,
-                        thumbnailsInput,
-                        stockInput,
-                        codeInput,
-                        statusInput,
-                        categoryInput}
-                  );
-      })
+      let titleInput = document.getElementById("title").value;
+      let descriptionInput = document.getElementById("description").value;
+      let priceInput = document.getElementById("price").value;
+      let thumbnailsInput = document.getElementById("thumbnails").value;
+      let stockInput = document.getElementById("stock").value;
+      let codeInput = document.getElementById("code").value;
+      let statusInput = document.getElementById("status").value;
+      let categoryInput = document.getElementById("category").value;
+
+      const newProduct = {
+            titleInput,
+            descriptionInput,
+            priceInput,
+            thumbnailsInput,
+            stockInput,
+            codeInput,
+            statusInput,
+            categoryInput
+      }
+
+      socket.emit("addProduct", newProduct);
 });
+
+socket.on("products", (data) => {
+      const productsCards = document.getElementById("productsRT");
+      productsCards.innerHTML = "";
+      data.forEach(product => {
+            let productCard = document.createElement("div").className("products-wrapper");
+            productCard.innerHTML = `
+            <h2>Nombre:<br> ${product.title}</h2>
+            <p>Descripción:<br> ${product.description}</p>
+            <p>Precio:<br> €${product.price}</p>
+            <button id="deleteBtn">Eliminar producto</button>
+            `
+      productsCards.appendChild(productCard);
+      })
+})

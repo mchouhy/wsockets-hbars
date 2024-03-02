@@ -1,5 +1,5 @@
 <h1 class="title">Manejador de productos en tiempo real</h1>
-<div class="products-wrapper">
+<div id="productsRT" class="products-wrapper">
       {{#each products}}
       <div class="product-container">
             <h2>Nombre:<br> {{this.title}}</h2>
@@ -9,45 +9,41 @@
       </div>
       {{/each}}
 </div>
-<form class="" action="">
-      <div class="inputs-container">
+<form id="addProductForm" class="inputs-container" action="">
             <div>
                   <label for="title">Nombre:</label>
-                  <input type="text" name="" id="title">
+                  <input type="text" id="title">
             </div>
             <div>
                   <label for="title">Descripción:</label>
-                  <input type="text" name="" id="description">
+                  <input type="text" id="description">
             </div>
             <div>
                   <label for="title">Precio:</label>
-                  <input type="number" name="" id="price">
+                  <input type="number" id="price">
             </div>
             <div>
                   <label for="title">Thumbnails:</label>
-                  <input value="[]" type="text" name="" id="thumbnails" disabled>
+                  <input type="text" id="thumbnails" value="[]" disabled>
             </div>
             <div>
                   <label for="title">Stock:</label>
-                  <input type="number" name="" id="stock">
+                  <input type="number" id="stock">
             </div>
             <div>
                   <label for="title">Código:</label>
-                  <input type="text" name="" id="code">
+                  <input type="text" id="code">
             </div>
             <div>
                   <label for="title">Estado:</label>
-                  <input value="true" type="text" name="" id="status" disabled>
+                  <input value="true" type="text" id="status" disabled>
                   
             </div>
             <div>
                   <label for="title">Categoría:</label>
-                  <input value="muebles" type="text" name="" id="category" disabled>
+                  <input value="muebles" type="text" id="category" disabled>
             </div>
-            <div>
-                  <button type="button" id="addProductBtn">Agregar producto</button>
-            </div>
-      </div>
+      <button type="submit">Agregar producto</button>
 </form>
 
 <script src="https://cdn.socket.io/4.7.4/socket.io.min.js"></script>

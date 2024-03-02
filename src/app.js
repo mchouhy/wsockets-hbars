@@ -14,6 +14,11 @@ import { productsRouter } from './routes/products.router.js';
 import { cartsRouter } from './routes/carts.router.js'
 // Importación del Socket.io (https://socket.io/docs/v4/tutorial/introduction):
 import { Server } from 'socket.io';
+// Importación del manejador de productos.
+import { ProductManager } from './controllers/productManager.js'
+// Llamado de la función constructora.
+const productManager = new ProductManager;
+
 
 // Directorio raíz desde el cual Express servirá los archivos estáticos cuando se realicen solicitudes HTTP:
 app.use(express.static('./src/public'))
@@ -40,11 +45,23 @@ const httpServer = app.listen(PORT, () => console.log(`Escuchando cualquier camb
 const io = new Server(httpServer);
 // Configuración del primer evento que escucha las peticiones del cliente ("connection: nombre del evento"):
 io.on("connection", (socket) => {
-      console.log("Cliente conectado");
+      console.log("Cliente conectado.");
 
       socket.on("client-message", (data) => {
-            console.log(data)
-      })
+            console.log(data);
+      });
 
-      socket.emit("server-message", "Soy el servidor enviando un mensaje.")
+      socket.emit("server-message", "Soy el servidor enviando un mensaje.");
+
+      socket.on("addProduct", async (data) => {
+            try {
+                  await productManager.addProduct(data);
+                  socket.emit("sucess", {message: `Producto agregado con éxito.`});
+                  const productsDB = await productManager.getProducts();
+                  socket.emit("products", productsDB);
+            } catch (error) {
+                  socket.emit("error", "Error al agregar el producto");
+            }
+      })
 });
+

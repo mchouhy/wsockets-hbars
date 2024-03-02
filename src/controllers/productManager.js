@@ -48,17 +48,17 @@ export class ProductManager {
       }
 
       // Función que agrega los objetos de productos al archivo JSON, validando previamente el cumplimiento de las condiciones de la preentrega.
-      addProduct = async ({ title, description, code, price, status, stock, category, thumbnails }) => {
+      addProduct = async (product) => {
             try {
                   //Lectura del archivo JSON y parse.
                   const productsDB = await this.readDB()
                   // Validación 1: Mensaje de error en caso de que no se completen todos los campos requeridos.
-                  if (!title || !description || !code || !price || !status || !stock || !category || !thumbnails) {
+                  if (!product.title || !product.description || !product.code || !product.price || !product.status || !product.stock || !product.category || !product.thumbnails) {
                   alert(`Error. Es necesario completar todos los campos del producto para que pueda ser agregado a la base de datos.`)
-                  return console.log(`Error. Es necesario completar todos los campos del producto para que pueda ser agregado a la base de datos.`)
+                  throw new Error(`Error. Es necesario completar todos los campos del producto para que pueda ser agregado a la base de datos.`)
                   }
                   // Validación 2: Mensaje de error en caso de que el "code" del producto agregado ya exista.
-                  const repeatedCode = productsDB.find(prod => prod.code === code)
+                  const repeatedCode = productsDB.find(prod => prod.code === product.code)
                   if (repeatedCode) {
                   alert(`Error. El producto: "${title}" no pudo ser agregado porque ya existe un producto con el código ingresado.`)
                   return console.log(`Error. El producto: "${title}" no pudo ser agregado porque ya existe un producto con el código ingresado.`)
@@ -66,14 +66,14 @@ export class ProductManager {
 
                   // Variable que guarda el nuevo producto.
                   const newProduct = {
-                        title,
-                        description,
-                        code,
-                        price,
-                        status: true,
-                        stock,
-                        category,
-                        thumbnails: thumbnails || []
+                        title: product.title,
+                        description: product.description,
+                        code: product.code,
+                        price: product.price,
+                        status: product.status,
+                        stock: product.stock,
+                        category: product.category,
+                        thumbnails: product.thumbnails || []
                   }
                   // Validación 3: Creación de un id autoincremental en cada producto agregado.
                   let lastId = 0;
@@ -85,10 +85,10 @@ export class ProductManager {
                   productsDB.push(newProduct);
                   // Se agrega el nuevo producto al archivo JSON
                   await fs.writeFile(this.path, JSON.stringify(productsDB, null, 2), "utf-8");
-                  alert(`Producto: ${title} agregado con éxito.`);
+                  alert(`Producto: ${product.title} agregado con éxito.`);
             } catch (error) {
-                  console.log(`Error al agregar el producto: ${newProduct.title}.`, error);
-                  alert(`Error al agregar el producto: ${newProduct.title}.`);
+                  console.log(`Error al agregar el producto: ${product.title}.`, error);
+                  alert(`Error al agregar el producto: ${product.title}.`);
             }
       }
 
