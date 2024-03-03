@@ -99,14 +99,14 @@
     "id": 9
   },
   {
-      "title": "Sofá Ana",
-      "description": "Sofá de 200cm x 100cm",
-      "price": 2200,
-      "thumbnails": "imagen de sofá ana",
-      "stock": 200,
-      "code": "yeg219",
-      "status": true,
-      "category": "muebles",
-      "id": 10
-    }
+    "title": "Sofá Ana",
+    "description": "Sofá de 200cm x 100cm",
+    "price": 2200,
+    "thumbnails": "imagen de sofá ana",
+    "stock": 200,
+    "code": "yeg219",
+    "status": true,
+    "category": "muebles",
+    "id": 10
+  }
 ]
