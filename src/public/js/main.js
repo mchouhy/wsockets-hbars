@@ -8,47 +8,72 @@ socket.emit("client-message", "Soy el cliente enviando un mensaje.");
 socket.on("server-message", (data) => {
       console.log(data);
 })
-// Variable que aloja el formulario para agregar productos.
-const addProductForm = document.getElementById("addProductForm");
-// Función que escucha el evento submit, guarda los valores ingresados y los envía al socket del lado del servidor para aplicarlo al json.
-addProductForm.addEventListener("submit", (e) => {
+
+document.addEventListener("DOMContentLoaded", () => {
+      // Variable que aloja el formulario para agregar productos.
+      const addProductForm = document.getElementById("addProductForm");
+      // Función que escucha el evento submit, guarda los valores ingresados y los envía al socket del lado del servidor para aplicarlo al json.
+      addProductForm.addEventListener("submit", (e) => {
+            e.preventDefault();
+            console.log("Add product submit");
+            let titleInput = document.getElementById("title").value;
+            let descriptionInput = document.getElementById("description").value;
+            let priceInput = parseInt(document.getElementById("price").value);
+            let thumbnailsInput = document.getElementById("thumbnails").value;
+            let stockInput = parseInt(document.getElementById("stock").value);
+            let codeInput = document.getElementById("code").value;
+            let categoryInput = document.getElementById("category").value;
+
+            const newProduct = {
+                  title: titleInput,
+                  description: descriptionInput,
+                  code: codeInput,
+                  price: priceInput,
+                  stock: stockInput,
+                  category: categoryInput,
+                  thumbnails: thumbnailsInput
+            }
+
+            socket.emit("addProduct", newProduct);
+
+            addProductForm.reset();
+
+      });
+
+      
+})
+
+const deleteProductForm = document.getElementById("deleteProductForm");
+deleteProductForm.addEventListener("submit", (e) => {
       e.preventDefault();
-      console.log("submit")
+      console.log("Delete product submit");
+      let idInput = parseInt(document.getElementById("id").value);
 
-      let titleInput = document.getElementById("title").value;
-      let descriptionInput = document.getElementById("description").value;
-      let priceInput = document.getElementById("price").value;
-      let thumbnailsInput = document.getElementById("thumbnails").value;
-      let stockInput = document.getElementById("stock").value;
-      let codeInput = document.getElementById("code").value;
-      let statusInput = document.getElementById("status").value;
-      let categoryInput = document.getElementById("category").value;
+      const prodId = idInput;
 
-      const newProduct = {
-            titleInput,
-            descriptionInput,
-            priceInput,
-            thumbnailsInput,
-            stockInput,
-            codeInput,
-            statusInput,
-            categoryInput
-      }
+      socket.emit("deleteProduct", prodId);
 
-      socket.emit("addProduct", newProduct);
-});
+      deleteProductForm.reset();
+})
+
 
 socket.on("products", (data) => {
       const productsCards = document.getElementById("productsRT");
       productsCards.innerHTML = "";
       data.forEach(product => {
-            let productCard = document.createElement("div").className("products-wrapper");
+            let productCard = document.createElement("div");
+            productCard.className = "product-container";
             productCard.innerHTML = `
             <h2>Nombre:<br> ${product.title}</h2>
             <p>Descripción:<br> ${product.description}</p>
             <p>Precio:<br> €${product.price}</p>
-            <button id="deleteBtn">Eliminar producto</button>
+            <p>Id:<br> ${product.id}</p>
             `
-      productsCards.appendChild(productCard);
-      })
-})
+            productsCards.appendChild(productCard);
+      });
+});
+
+
+socket.on("error", async (data) => {
+      console.log(data)
+});

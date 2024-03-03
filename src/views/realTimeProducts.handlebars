@@ -5,45 +5,47 @@
             <h2>Nombre:<br> {{this.title}}</h2>
             <p>Descripción:<br> {{this.description}}</p>
             <p>Precio:<br> €{{this.price}}</p>
-            <button>Eliminar producto</button>
+            <p>Id:<br> {{this.id}}</p>
       </div>
       {{/each}}
 </div>
-<form id="addProductForm" class="inputs-container" action="">
+<form id="addProductForm" class="inputs-container">
             <div>
                   <label for="title">Nombre:</label>
                   <input type="text" id="title">
             </div>
             <div>
-                  <label for="title">Descripción:</label>
+                  <label for="description">Descripción:</label>
                   <input type="text" id="description">
             </div>
             <div>
-                  <label for="title">Precio:</label>
+                  <label for="price">Precio:</label>
                   <input type="number" id="price">
             </div>
             <div>
-                  <label for="title">Thumbnails:</label>
-                  <input type="text" id="thumbnails" value="[]" disabled>
+                  <label for="thumbnails">Thumbnails:</label>
+                  <input type="text" id="thumbnails" disabled>
             </div>
             <div>
-                  <label for="title">Stock:</label>
+                  <label for="stock">Stock:</label>
                   <input type="number" id="stock">
             </div>
             <div>
-                  <label for="title">Código:</label>
+                  <label for="code">Código:</label>
                   <input type="text" id="code">
             </div>
             <div>
-                  <label for="title">Estado:</label>
-                  <input value="true" type="text" id="status" disabled>
-                  
-            </div>
-            <div>
-                  <label for="title">Categoría:</label>
-                  <input value="muebles" type="text" id="category" disabled>
+                  <label for="category">Categoría:</label>
+                  <input type="text" id="category">
             </div>
       <button type="submit">Agregar producto</button>
+</form>
+<form id="deleteProductForm" class="inputs-container">
+      <div>
+            <label for="id">Id:</label>
+            <input type="number" id="id">
+      </div>
+      <button type="submit">Eliminar producto</button>
 </form>
 
 <script src="https://cdn.socket.io/4.7.4/socket.io.min.js"></script>

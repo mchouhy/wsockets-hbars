@@ -52,17 +52,22 @@ export class ProductManager {
             try {
                   //Lectura del archivo JSON y parse.
                   const productsDB = await this.readDB()
-                  // Validación 1: Mensaje de error en caso de que no se completen todos los campos requeridos.
-                  if (!product.title || !product.description || !product.code || !product.price || !product.status || !product.stock || !product.category || !product.thumbnails) {
-                  alert(`Error. Es necesario completar todos los campos del producto para que pueda ser agregado a la base de datos.`)
-                  throw new Error(`Error. Es necesario completar todos los campos del producto para que pueda ser agregado a la base de datos.`)
-                  }
-                  // Validación 2: Mensaje de error en caso de que el "code" del producto agregado ya exista.
+                 
+                  // Validación 1: Mensaje de error en caso de que el "code" del producto agregado ya exista.
                   const repeatedCode = productsDB.find(prod => prod.code === product.code)
                   if (repeatedCode) {
-                  alert(`Error. El producto: "${title}" no pudo ser agregado porque ya existe un producto con el código ingresado.`)
-                  return console.log(`Error. El producto: "${title}" no pudo ser agregado porque ya existe un producto con el código ingresado.`)
+                  throw new Error(`El producto: "${product.title}" no pudo ser agregado porque ya existe un producto con el código ingresado.`)
                   }
+
+                  // Validación 2: Mensaje de error en caso de que se omita completar una propiedad del producto a agregar.
+                  if(   !product.title 
+                     || !product.description 
+                     || !product.code 
+                     || !product.price 
+                     || !product.stock
+                     || !product.category) {
+                  throw new Error(`Error. Debes completar todos los campos para agregar el producto exitosamente.`)
+                        }
 
                   // Variable que guarda el nuevo producto.
                   const newProduct = {
@@ -70,7 +75,7 @@ export class ProductManager {
                         description: product.description,
                         code: product.code,
                         price: product.price,
-                        status: product.status,
+                        status: product.status === false ? false : true,
                         stock: product.stock,
                         category: product.category,
                         thumbnails: product.thumbnails || []
@@ -85,10 +90,9 @@ export class ProductManager {
                   productsDB.push(newProduct);
                   // Se agrega el nuevo producto al archivo JSON
                   await fs.writeFile(this.path, JSON.stringify(productsDB, null, 2), "utf-8");
-                  alert(`Producto: ${product.title} agregado con éxito.`);
+                  console.log(`Producto: ${product.title} agregado con éxito.`);
             } catch (error) {
                   console.log(`Error al agregar el producto: ${product.title}.`, error);
-                  alert(`Error al agregar el producto: ${product.title}.`);
             }
       }
 
